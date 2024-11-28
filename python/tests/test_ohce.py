@@ -32,6 +32,16 @@ def test_greeting_never_returns_none(clock_mock):
         assert greeter.greet() is not None
 
 
+class MainSetupOhce:
+    def __init__(self):
+        self.input_words = ["hello", "oto", "quit"]
+        self.expected_outputs = ["olleh", "oto", "That was a palindrome!"]
+        self.generated_outputs = []
+
+    def handle_output(self, message):
+        self.generated_outputs.append(message)
+
+
 def test_ohce_main_loop():
     """
     Given the following inputs:
@@ -45,19 +55,13 @@ def test_ohce_main_loop():
     - That was a palindrome!
     """
     interactor_mock = Mock()
+    ohce_main = OhceMain()
 
-    input_words = ["hello", "oto", "quit"]
-    expected_outputs = ["olleh", "oto", "That was a palindrome!"]
-    generated_outputs = []
-
-    def handle_output(message):
-        generated_outputs.append(message)
-
-    interactor_mock.read_input.side_effect = input_words
-    interactor_mock.print_message.side_effect = handle_output
+    interactor_mock.read_input.side_effect = ohce_main.input_words
+    interactor_mock.print_message.side_effect = ohce_main.handle_output
 
     ui = UI(interactor=interactor_mock)
     ui.main_loop()
 
-    assert len(generated_outputs) == len(expected_outputs)
-    assert generated_outputs == expected_outputs
+    assert len(ohce_main.generated_outputs) == len(ohce_main.expected_outputs)
+    assert ohce_main.generated_outputs == ohce_main.expected_outputs
