@@ -10,8 +10,10 @@ class ConsoleInteractor:
 
 
 class UI:
-    def __init__(self):
-        self.interactor = ConsoleInteractor()
+    def __init__(self, interactor=None):
+        if interactor is None:
+            interactor = ConsoleInteractor
+        self.interactor = interactor
 
     def main_loop(self):
         while True:
