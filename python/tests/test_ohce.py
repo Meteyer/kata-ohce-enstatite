@@ -26,7 +26,11 @@ def test_greeting_never_returns_none(clock_mock):
     Check that for each hour from 0 to 23, the greet()
     method never return None
     """
-    pytest.fail("TODO")
+    greeter = Greeter(clock=clock_mock)
+    for i in range(24):
+        clock_mock.current_hour.return_value = i
+        assert greeter.greet() is not None
+
 
 def test_ohce_main_loop():
     """
