@@ -40,4 +40,20 @@ def test_ohce_main_loop():
     - oto
     - That was a palindrome!
     """
-    pytest.fail("TODO")
+    interactor_mock = Mock()
+
+    input_words = ["hello", "oto", "quit"]
+    expected_outputs = ["olleh", "oto", "That was a palindrome!"]
+    generated_outputs = []
+
+    def handle_output(message):
+        generated_outputs.append(message)
+
+    interactor_mock.read_input.side_effect = input_words
+    interactor_mock.print_message.side_effect = handle_output
+
+    ui = UI(interactor=interactor_mock)
+    ui.main_loop()
+
+    assert len(generated_outputs) == len(expected_outputs)
+    assert generated_outputs == expected_outputs
